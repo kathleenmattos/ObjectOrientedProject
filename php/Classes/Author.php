@@ -65,10 +65,60 @@ Class Author {
 		$this->authorId = $uuid;
 	}
 	/**
-	 * accessor method for author avatar url
+	 * accessor method for Avatar url
 	 *
-	 * @return string value of the author avatar url
+	 * @return string value of author avatar url
+	 *
 	 */
-	public function
+	public function getAuthorAvatarUrl(): string {
+			return ($this->authorAvatarUrl);
+	}
+	/**
+	 * mutator method for the author avatar url
+	 *
+	 * @param string $newAuthorAvatarUrl new value of the author avatar
+	 * @throws \InvalidArgumentException if $newAuthorAvatarUrl is not a string or insecure
+	 * @throws \RangeException if $newAuthorAvatarUrl is > 32 characters
+	 * @throws \TypeError if $newAuthorAvatarUrl is not a string
+	 */
+
+
+
+
+
+
+
+	/**
+	 * accessor method for author activation token
+	 *
+	 * @return string value of the author activation token
+	 */
+	public function getAuthorActivationToken(): ?string {
+		return ($this->authorActivationToken);
+	}
+	/**
+	 * @param string $newAuthorActivationToken
+	 * @throws \InvalidArgumentException if url is not string or insecure
+	 * @throws \RangeException if the url is over 225 characters
+	 * @throws \TypeError if the url is not a string
+	 */
+	public function setAuthorActivationToken(?string $newAuthorActivationToken): void {
+		if($newAuthorActivationToken === null) {
+			$this->authorActivationToken = null;
+			return;
+		}
+		$newAuthorActivationToken = strtolower(trim($newAuthorActivationToken));
+		if(ctype_xdigit($newAuthorActivationToken) === false) {
+			throw(new\RangeException("author activation token is not valid"));
+		}
+		//make sure author activation token is only 32 characters
+		if(strlen($newAuthorActivationToken) !== 32) {
+				throw (new\RangeException("author token has to be 32 characters"));
+		}
+		$this->authorActivationToken = $newAuthorActivationToken;
+	}
+
+
+
 }
 ?>
