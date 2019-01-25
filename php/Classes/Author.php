@@ -1,4 +1,10 @@
 <?php
+
+namespace Edu\Cnm\ObjectOrientedProject;
+
+require_once (dirname(_DIR_, 2) . "/vendor/autoload.php");
+
+use Ramsey\Uuid\Uuid;
 /**
  * Object Oriented Programming Project Phase 1 for Deep Dive Coding Bootcamp
  *
@@ -78,16 +84,23 @@ Class Author {
 	 *
 	 * @param string $newAuthorAvatarUrl new value of the author avatar
 	 * @throws \InvalidArgumentException if $newAuthorAvatarUrl is not a string or insecure
-	 * @throws \RangeException if $newAuthorAvatarUrl is > 32 characters
+	 * @throws \RangeException if $newAuthorAvatarUrl is > 255 characters
 	 * @throws \TypeError if $newAuthorAvatarUrl is not a string
 	 */
-
-
-
-
-
-
-
+	public function setAuthorAvatarUrl (string $newAuthorAvatarUrl) : void {
+		//verify the author avatar url is secure
+		$newAuthorAvatarUrl = trim($newAuthorAvatarUrl);
+		$newAuthorAvatarUrl = filter_var($newAuthorAvatarUrl, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newAuthorAvatarUrl) === true) {
+				throw (new \InvalidArgumentException("author avatar url is empty or insecure"));
+		}
+		//verify the author avatar url will fit in the database
+		if(strlen($newAuthorAvatarUrl) > 255) {
+				throw(new \RangeException("author avatar url is too large"));
+		}
+		//store the author avatar url
+		$this->authorAvatarUrl = $newAuthorAvatarUrl;
+	}
 	/**
 	 * accessor method for author activation token
 	 *
@@ -116,6 +129,101 @@ Class Author {
 				throw (new\RangeException("author token has to be 32 characters"));
 		}
 		$this->authorActivationToken = $newAuthorActivationToken;
+	}
+	/**
+	 * accessor method for email
+	 *
+	 * @return string value for email
+	 */
+	public function getAuthorEmail(): string {
+			return $this->authorEmail;
+	}
+	/**
+	 * mutator method for email
+	 *
+	 * @param string $newAuthorEmail new value of email
+	 * @throws \InvalidArgumentException if $newAuthorEmail is not a valid email or is insecure
+	 * @throws \RangeException if $newAuthorEmail is > 128 characters
+	 * @throws \TypeError if $newAuthorEmail is not a string
+	 */
+	public function setAuthorEmail(string $newAuthorEmail): void {
+		// verify the email is secure
+		$newAuthorEmail = trim($newAuthorEmail);
+		$newAuthorEmail = filter_var($newAuthorEmail, FILTER_VALIDATE_EMAIL);
+		if(empty($newAuthorEmail) === true) {
+				throw(new \InvalidArgumentException("author email may be invalid or insecure"));
+		}
+		// verify the email will fit in the database
+		if(strlen($newAuthorEmail) > 128) {
+				throw(new \RangeException("author email is too large"));
+		}
+		// store the email
+		$this->authorEmail = $newAuthorEmail;
+	}
+	/**
+	 * accessor method for author hash
+	 *
+	 * @return string value of hash
+	 */
+	public function getAuthorHash(): string {
+			return $this->authorHash;
+	}
+
+	/**
+	 * mutator method for the profile hash password
+	 *
+	 * @param string $newAuthorHash
+	 * @throws \InvalidArgumentException if the hash is not secure
+	 * @throws \RangeException if the hash is not 128 characters
+	 * @throws \TypeError if the author hash is not a string
+	 */
+	public function setAuthorHash(string $newAuthorHash): void {
+		//enforce that the hash is properly formatted
+		$newAuthorHash = trim($newAuthorHash);
+		if(empty($newAuthorHash) === true) {
+				throw(new \InvalidArgumentException("author password hash is empty or insecure"));
+		}
+		// enfore this hash is really an Argon hash
+		$authorHashInfo = password_get_info($newAuthorHash);
+		if($authorHashInfo["algoname"] !== "argon2i") {
+				throw(new \InvalidArgumentException("author hash is not a valid hash"));
+		}
+		//enforce the hash is exactly 97 characters
+		if(strlen($newAuthorHash) !== 97) {
+			throw(new \RangeException("author hash must be 97 characters"));
+		}
+		//store the hash
+		$this->authorHash =$newAuthorHash;
+	}
+	/**
+	 * acessor method for username
+	 *
+	 * @return string value for username
+	 */
+	public function getAuthorUsername(): string {
+			return ($this->authorUsername);
+	}
+	/**
+	 * mutator method for author username
+	 *
+	 * @param string $newAuthorUsername new value of the author username
+	 * @throws \InvalidArgumentException if $newAuthorUsername is not a string or insecure
+	 * @throws \RangeException if $newAuthorUsername is > 32 characters
+	 * @throws \TypeError if $newAuthorUsername is not a string
+	 */
+	public function setAuthorUsername(string $newAuthorUsername): void {
+		//verify the at handle is secure
+		$newAuthorUsername = trim($newAuthorUsername);
+		$newAuthorUsername =  filter_var($newAuthorUsername, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newAuthorUsername) === true) {
+				throw(new \InvalidArgumentException("author username is empty or insecure"));
+		}
+		// verify the author username will fit in the database
+		if(strlen($newAuthorUsername) > 32) {
+				throw (new \RangeException("author username is too large"));
+		}
+		//store the username
+		$this->authorUsername = $newAuthorUsername;
 	}
 
 
