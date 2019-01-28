@@ -10,7 +10,7 @@ use Ramsey\Uuid\Uuid;
 /**
  * Object Oriented Programming Project Phase 1 for Deep Dive Coding Bootcamp
  *
- * Phase 1- state variables, accessors, mutators, and contructor
+ * Phase 1- state variables, accessors, mutators, and constructor
  *
  * @author Kathleen Mattos <kmattos1@cnm.edu>
  **/
@@ -282,6 +282,9 @@ class Author {
 		//bind the member variables to the place holders in the template
 		//----$formattedDate = $this->
 	//};
+
+
+
 
 }
 ?>
