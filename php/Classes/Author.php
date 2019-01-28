@@ -13,7 +13,7 @@ use Ramsey\Uuid\Uuid;
  *
  * @author Kathleen Mattos <kmattos1@cnm.edu>
  **/
-class Author implements \JsonSerializable {
+class Author {
 	use ValidateUuid;
 	/**
 	 * id for the profile; this is the primary key
@@ -60,7 +60,7 @@ class Author implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 */
-	public function _construct($newAuthorId, ?string $newAuthorActivationToken, ?string $newAuthorAvatarUrl, string $newAuthorEmail, string $newAuthorHash, string $newAuthorUsername) {
+	public function __construct($newAuthorId, ?string $newAuthorActivationToken, ?string $newAuthorAvatarUrl, string $newAuthorEmail, string $newAuthorHash, string $newAuthorUsername) {
 				try {
 							$this->setAuthorId($newAuthorId);
 							$this->setAuthorActivationToken($newAuthorActivationToken);
@@ -69,7 +69,7 @@ class Author implements \JsonSerializable {
 							$this->setAuthorHash($newAuthorHash);
 							$this->setAuthorUsername($newAuthorUsername);
 				} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-						//determine what expection type was thrown
+						//determine what exception type was thrown
 						$exceptionType = get_class($exception);
 						throw(new $exceptionType($exception->getMessage(), 0, $exception));
 				}
@@ -77,16 +77,16 @@ class Author implements \JsonSerializable {
 	/**
 	 * accessor method for author Id
 	 *
-	 * @return int value of author Id
+	 * @return string value of author Id
 	 */
-	public function getAuthorId(): Uuid {
+	public function getAuthorId(): string {
 		return($this->authorId);
 	}
 
 	/**
 	 * mutator method for author id
 	 *
-	 * @param Uuid| string $newauthorId new value of author Id
+	 * @param string| string $newauthorId new value of author Id
 	 * @throws \RangeException if $newProfileId is not positive
 	 * @throws \TypeError if the author Id is not
 	 */
@@ -119,8 +119,11 @@ class Author implements \JsonSerializable {
 	 */
 	public function setAuthorAvatarUrl (string $newAuthorAvatarUrl) : void {
 		//verify the author avatar url is secure
-		$newAuthorAvatarUrl = trim($newAuthorAvatarUrl);
-		$newAuthorAvatarUrl = filter_var($newAuthorAvatarUrl, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		/**
+		 * the following two lines potential throw errors, commented out until further testing
+		 */
+		//$newAuthorAvatarUrl = trim($newAuthorAvatarUrl);
+		//$newAuthorAvatarUrl = filter_var($newAuthorAvatarUrl, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newAuthorAvatarUrl) === true) {
 				throw (new \InvalidArgumentException("author avatar url is empty or insecure"));
 		}
@@ -255,19 +258,23 @@ class Author implements \JsonSerializable {
 		//store the username
 		$this->authorUsername = $newAuthorUsername;
 	}
+
 	/**
-	 * formats the state variables for JSON serialization
+	 * inserts this author into mySQL
 	 *
-	 * @return array resulting in state variables to serialize
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
 	 */
-	public function jsonSerialize() {
-		$fields=get_object_vars($this);
-		$fields["authorId"] = $this->authorId->toSting();
-		unset($fields["authorHash"]);
-		return ($fields);
-	}
+	//----public function insert(\PDO $pdo) : void {
 
+		//create query template
+		//---$query = "INSERT INTO author(authorId,authorAvatarUrl,authorActivationToken,authorEmail,authorHash,authorUsername) VALUES(:authorId, :authorAvatarUrl, :authorActivationToken, :authorEmail, :authorHash, authorUsername)";
+		//-----$statement = $pdo->prepare($query);
 
+		//bind the member variables to the place holders in the template
+		//----$formattedDate = $this->
+	//};
 
 }
 ?>
