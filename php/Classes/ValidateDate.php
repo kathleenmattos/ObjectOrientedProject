@@ -1,7 +1,8 @@
 <?php
 
 namespace Kmattos1\ObjectOrientedProject;
-require_once (dirname(__DIR__, 2) . "/Classes/Author.php");
+require_once("../../vendor/autoload.php");
+//require_once (dirname(__DIR__, 2) . "/Classes/Author.php");
 use Ramsey\Uuid\Uuid;
 /**
  * Trait to Validate a mySQL Date

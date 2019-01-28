@@ -1,6 +1,7 @@
 <?php
 namespace Kmattos1\ObjectOrientedProject;
-require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
+require_once("../../vendor/autoload.php");
+//require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
 use Ramsey\Uuid\Uuid;
 /**
  * Trait to validate a uuid
@@ -23,7 +24,7 @@ trait ValidateUuid {
 	 * @throws \InvalidArgumentException if $newUuid is not a valid uuid
 	 * @throws \RangeException if $newUuid is not a valid uuid v4
 	 **/
-	private static function validateUuid($newUuid) : Uuid {
+	private static function validateUuid($newUuid)  {
 		// verify a string uuid
 		if(gettype($newUuid) === "string") {
 			// 16 characters is binary data from mySQL - convert to string and fall to next if block
