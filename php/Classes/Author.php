@@ -1,8 +1,9 @@
 <?php
 
-namespace Edu\Cnm\ObjectOrientedProject;
+namespace Kmattos1\ObjectOrientedProject;
 
-require_once (dirname(_DIR_, 2) . "/vendor/autoload.php");
+require_once("autoload.php");
+require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
 
 use Ramsey\Uuid\Uuid;
 /**
@@ -12,7 +13,8 @@ use Ramsey\Uuid\Uuid;
  *
  * @author Kathleen Mattos <kmattos1@cnm.edu>
  **/
-Class Author {
+class Author implements \JsonSerializable {
+	use ValidateUuid;
 	/**
 	 * id for the profile; this is the primary key
 	 * @var Uuid $authorId
@@ -43,7 +45,35 @@ Class Author {
 	 * @var string $authorUsername
 	 */
 	private $authorUsername;
-
+	/**
+	 * contructor for this profile
+	 *
+	 * @param string|Uuid $newAuthorId id of this Author or null if a new Author account
+	 * @param string $newAuthorActivationToken activation token to safe guard against malicious accounts
+	 * @param string $newAuthorAvatarUrl url of the author's avatar
+	 * @param string $newAuthorEmail string containing the author email
+	 * @param string $newAuthorHash string containing the password hash
+	 * @param string $newAuthorUsername string containing newAuthorUsername
+	 * @throws \InvalidArgumentException if the data types are not valid
+	 * @throws \RangeException if the data values are out of bounds (e.g., strings too long, negative integers)
+	 * @throws \TypeError if a data type violates a data hint
+	 * @throws \Exception if some other exception occurs
+	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
+	 */
+	public function _construct($newAuthorId, ?string $newAuthorActivationToken, ?string $newAuthorAvatarUrl, string $newAuthorEmail, string $newAuthorHash, string $newAuthorUsername) {
+				try {
+							$this->setAuthorId($newAuthorId);
+							$this->setAuthorActivationToken($newAuthorActivationToken);
+							$this->setAuthorAvatarUrl($newAuthorAvatarUrl);
+							$this->setAuthorEmail($newAuthorEmail);
+							$this->setAuthorHash($newAuthorHash);
+							$this->setAuthorUsername($newAuthorUsername);
+				} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+						//determine what expection type was thrown
+						$exceptionType = get_class($exception);
+						throw(new $exceptionType($exception->getMessage(), 0, $exception));
+				}
+	}
 	/**
 	 * accessor method for author Id
 	 *
@@ -224,6 +254,17 @@ Class Author {
 		}
 		//store the username
 		$this->authorUsername = $newAuthorUsername;
+	}
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting in state variables to serialize
+	 */
+	public function jsonSerialize() {
+		$fields=get_object_vars($this);
+		$fields["authorId"] = $this->authorId->toSting();
+		unset($fields["authorHash"]);
+		return ($fields);
 	}
 
 
