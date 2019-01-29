@@ -273,15 +273,48 @@ class Author {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 */
-	//----public function insert(\PDO $pdo) : void {
+	public function insert(\PDO $pdo) : void {
 
 		//create query template
-		//---$query = "INSERT INTO author(authorId,authorAvatarUrl,authorActivationToken,authorEmail,authorHash,authorUsername) VALUES(:authorId, :authorAvatarUrl, :authorActivationToken, :authorEmail, :authorHash, authorUsername)";
-		//-----$statement = $pdo->prepare($query);
+		$query = "INSERT INTO author(authorId,authorAvatarUrl,authorActivationToken,authorEmail,authorHash,authorUsername) VALUES(:authorId, :authorAvatarUrl, :authorActivationToken, :authorEmail, :authorHash, authorUsername)";
+		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the place holders in the template
-		//----$formattedDate = $this->
-	//};
+		//commented out because of lack of date
+		$parameters = ["authorId" =>$this->authorId->getBytes(), "authorAvatarUrl" =>$this->authorAvatarUrl->getBytes(), "authorActivationToken" =>$this->authorActivationToken->getBytes(), "authorEmail" =>$this->authorEmail->getBytes(), "authorHash" =>$this->authorHash->getBytes(), "authorEmail" =>$this->authorEmail->getBytes()];
+		$statement ->execute($parameters);
+	}
+
+	/**
+	 * deletes this author from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 */
+	public function delete(\PDO $pdo): void {
+
+		// create a query template
+		$query = "DELETE FROM author WHERE authorId = :authorId";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the place holder in the template
+		$parameters = ["authorId" => $this->authorId->getBytes()];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * updates this author in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 */
+	public function update(\PDO $pdo) : void {
+
+		//create query template
+		$query = "UPDATE author SET suthorId = :authorId, authorAvatarUrl = :authorAvatarUrl, author ";
+	}
 
 
 
