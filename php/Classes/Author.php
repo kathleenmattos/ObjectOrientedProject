@@ -281,7 +281,7 @@ class Author {
 
 		//bind the member variables to the place holders in the template
 		//commented out because of lack of date
-		$parameters = ["authorId" =>$this->authorId->getBytes(), "authorAvatarUrl" =>$this->authorAvatarUrl->getBytes(), "authorActivationToken" =>$this->authorActivationToken->getBytes(), "authorEmail" =>$this->authorEmail->getBytes(), "authorHash" =>$this->authorHash->getBytes(), "authorEmail" =>$this->authorEmail->getBytes()];
+		$parameters = ["authorId" =>$this->authorId, "authorAvatarUrl" =>$this->authorAvatarUrl, "authorActivationToken" =>$this->authorActivationToken, "authorEmail" =>$this->authorEmail->getBytes(), "authorHash" =>$this->authorHash, "authorUsername" => $this->authorUsername->getByes()];
 		$statement ->execute($parameters);
 	}
 
@@ -316,7 +316,7 @@ class Author {
 		$query = "UPDATE author SET suthorId = :authorId, authorAvatarUrl = :authorAvatarUrl, authorActivationToken = :authorActivationToken, authorEmail = :authorEmail, authorHash = :authorHash, authorUsername = :authorUsername";
 		$statement = $pdo->prepare($query);
 
-		$parameters = ["authorId" => $this->authorId->getBytes(), "authorAvatarUrl" => $this->authorAvatarUrl->getBytes(), "authorActivationToken" => $this->authorActivationToken->getBytes(), "authorEmail" => $this->authorEmail->getBytes(), "authorHash" => $this->authorHash->getBytes(), "authorUsername" => $this->authorUsername->getBytes()];
+		$parameters = ["authorId" => $this->authorId, "authorAvatarUrl" => $this->authorAvatarUrl->getBytes(), "authorActivationToken" => $this->authorActivationToken->getBytes(), "authorEmail" => $this->authorEmail->getBytes(), "authorHash" => $this->authorHash->getBytes(), "authorUsername" => $this->authorUsername->getBytes()];
 		$statement->execute($parameters);
 	}
 
